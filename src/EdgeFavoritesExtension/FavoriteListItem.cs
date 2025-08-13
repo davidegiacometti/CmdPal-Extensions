@@ -28,7 +28,6 @@ namespace EdgeFavoritesExtension
                     ? string.Format(CultureInfo.CurrentCulture, "FolderResult_Profile_Subtitle".GetLocalized(), favorite.Path, favorite.Profile.Name)
                     : string.Format(CultureInfo.CurrentCulture, "FolderResult_Subtitle".GetLocalized(), favorite.Path);
                 Icon = new IconInfo("\uE8B7");
-                TextToSuggest = settingsManager.SearchMode == SearchMode.Tree ? $"{favorite.Path}/" : favorite.Name;
             }
             else if (favorite.Type == FavoriteType.Url)
             {
@@ -37,7 +36,6 @@ namespace EdgeFavoritesExtension
                     ? string.Format(CultureInfo.CurrentCulture, "FavoriteResult_Profile_Subtitle".GetLocalized(), favorite.Path, favorite.Profile.Name)
                     : string.Format(CultureInfo.CurrentCulture, "FavoriteResult_Subtitle".GetLocalized(), favorite.Path);
                 Icon = new IconInfo("\uE734");
-                TextToSuggest = settingsManager.SearchMode == SearchMode.Tree ? favorite.Path : favorite.Name;
             }
             else
             {
