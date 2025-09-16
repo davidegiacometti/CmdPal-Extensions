@@ -37,6 +37,14 @@ namespace EdgeFavoritesExtension
                     : string.Format(CultureInfo.CurrentCulture, "FavoriteResult_Subtitle".GetLocalized(), favorite.Path);
                 Icon = new IconInfo("\uE734");
             }
+            else if (favorite.Type == FavoriteType.Workspace)
+            {
+                Command = new OpenEdgeCommand(edgeManager, favorite, false, false);
+                Subtitle = settingsManager.SearchMode == SearchMode.Tree && profileManager.FavoriteProviders.Count > 1
+                    ? string.Format(CultureInfo.CurrentCulture, "WorkspaceResult_Profile_Subtitle".GetLocalized(), favorite.Name, favorite.Profile.Name)
+                    : string.Format(CultureInfo.CurrentCulture, "WorkspaceResult_Subtitle".GetLocalized(), favorite.Name);
+                Icon = new IconInfo("\uF5ED");
+            }
             else
             {
                 throw new ArgumentException("Invalid favorite item", nameof(favorite));

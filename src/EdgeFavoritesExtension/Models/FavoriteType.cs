@@ -7,5 +7,6 @@ namespace EdgeFavoritesExtension.Models
     {
         Folder = 0,
         Url = 1,
+        Workspace = 2,
     }
 }

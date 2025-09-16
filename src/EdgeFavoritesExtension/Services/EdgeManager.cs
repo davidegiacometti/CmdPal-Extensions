@@ -66,7 +66,16 @@ namespace EdgeFavoritesExtension.Services
 
         public bool Open(FavoriteItem favorite, bool inPrivate, bool newWindow)
         {
-            return OpenInternal(favorite.Profile, favorite.Url!, inPrivate, newWindow);
+            if (favorite.Type == FavoriteType.Url)
+            {
+                return OpenInternal(favorite.Profile, favorite.Url, null, inPrivate, newWindow);
+            }
+            else if (favorite.Type == FavoriteType.Workspace)
+            {
+                return OpenInternal(favorite.Profile, null, favorite.WorkspaceId, inPrivate, newWindow);
+            }
+
+            throw new ArgumentException("Invalid favorite item", nameof(favorite));
         }
 
         public bool Open(FavoriteItem[] favorites, bool inPrivate, bool newWindow)
@@ -79,7 +88,7 @@ namespace EdgeFavoritesExtension.Services
             // If there is no need to open in a new window, starting multiple processes is preferred to avoid long command line arguments
             if (newWindow)
             {
-                return Open(favorites[0].Profile, string.Join(" ", favorites.Select(f => f.Url!)), inPrivate, newWindow);
+                return OpenInternal(favorites[0].Profile, string.Join(" ", favorites.Select(f => f.Url!)), null, inPrivate, newWindow);
             }
             else
             {
@@ -97,14 +106,19 @@ namespace EdgeFavoritesExtension.Services
             }
         }
 
-        private bool Open(ProfileInfo profileInfo, string urls, bool inPrivate, bool newWindow)
+        private bool OpenInternal(ProfileInfo profileInfo, string? urls, string? workspaceId, bool inPrivate, bool newWindow)
         {
-            return OpenInternal(profileInfo, urls, inPrivate, newWindow);
-        }
+            var args = string.Empty;
 
-        private bool OpenInternal(ProfileInfo profileInfo, string urls, bool inPrivate, bool newWindow)
-        {
-            var args = urls;
+            if (urls != null)
+            {
+                args += $" {urls}";
+            }
+
+            if (workspaceId != null)
+            {
+                args += $" -launch-workspace=\"{workspaceId}\"";
+            }
 
             if (inPrivate)
             {

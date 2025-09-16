@@ -145,9 +145,17 @@
     <value>Favorite: {0} - {1}</value>
     <comment>{0} is the favorite path, {1} is the profile name</comment>
   </data>
+  <data name="WorkspaceResult_Profile_Subtitle" xml:space="preserve">
+    <value>Workspace: {0} - {1}</value>
+    <comment>{0} is the workspace name, {1} is the profile name</comment>
+  </data>
   <data name="FavoriteResult_Subtitle" xml:space="preserve">
     <value>Favorite: {0}</value>
     <comment>{0} is the favorite path</comment>
+  </data>
+  <data name="WorkspaceResult_Subtitle" xml:space="preserve">
+    <value>Workspace: {0}</value>
+    <comment>{0} is the workspace name</comment>
   </data>
   <data name="FolderResult_Profile_Subtitle" xml:space="preserve">
     <value>Folder: {0} - {1}</value>
