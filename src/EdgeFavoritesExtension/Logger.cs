@@ -6,11 +6,10 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using Serilog;
 using Windows.Storage;
-using ILogger = Community.PowerToys.Run.Plugin.EdgeFavorite.Core.ILogger;
 
 namespace EdgeFavoritesExtension
 {
-    internal class Logger : ILogger
+    internal class Logger
     {
         public Logger()
         {

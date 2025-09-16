@@ -45,14 +45,6 @@
     <PackageReference Include="Shmuelie.WinRTServer" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Platform)' == 'x64'">
-    <Reference Include="Libs\x64\Community.PowerToys.Run.Plugin.EdgeFavorite.Core.dll" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(Platform)' == 'ARM64'">
-    <Reference Include="Libs\ARM64\Community.PowerToys.Run.Plugin.EdgeFavorite.Core.dll" />
-  </ItemGroup>
-
   <!--
     Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
     Tools extension to be activated for this project even if the Windows App SDK Nuget

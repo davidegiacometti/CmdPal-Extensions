@@ -4,8 +4,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Community.PowerToys.Run.Plugin.EdgeFavorite.Core;
-using Community.PowerToys.Run.Plugin.EdgeFavorite.Core.Services;
+using EdgeFavoritesExtension.Services;
 using Microsoft.CommandPalette.Extensions;
 
 namespace EdgeFavoritesExtension
@@ -21,7 +20,7 @@ namespace EdgeFavoritesExtension
     {
         private readonly ManualResetEvent _extensionDisposedEvent;
         private readonly SettingsManager _settingsManager;
-        private readonly ILogger _logger;
+        private readonly Logger _logger;
         private readonly EdgeManager _edgeManager;
         private readonly ProfileManager _profileManager;
         private readonly FavoriteQuery _favoriteQuery;

@@ -4,9 +4,9 @@
 using System;
 using System.Globalization;
 using System.Linq;
-using Community.PowerToys.Run.Plugin.EdgeFavorite.Core.Models;
-using Community.PowerToys.Run.Plugin.EdgeFavorite.Core.Services;
 using EdgeFavoritesExtension.Commands;
+using EdgeFavoritesExtension.Models;
+using EdgeFavoritesExtension.Services;
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 using Windows.System;

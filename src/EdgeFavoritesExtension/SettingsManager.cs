@@ -4,7 +4,7 @@
 using System;
 using System.IO;
 using System.Linq;
-using Community.PowerToys.Run.Plugin.EdgeFavorite.Core.Models;
+using EdgeFavoritesExtension.Models;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 
 namespace EdgeFavoritesExtension

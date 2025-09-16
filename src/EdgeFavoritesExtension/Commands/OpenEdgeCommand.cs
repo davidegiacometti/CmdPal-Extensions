@@ -2,8 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Globalization;
-using Community.PowerToys.Run.Plugin.EdgeFavorite.Core.Models;
-using Community.PowerToys.Run.Plugin.EdgeFavorite.Core.Services;
+using EdgeFavoritesExtension.Models;
+using EdgeFavoritesExtension.Services;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 
 namespace EdgeFavoritesExtension.Commands
