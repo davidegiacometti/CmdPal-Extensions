@@ -212,4 +212,13 @@
   <data name="Setting_ExcludedProfiles_Placeholder" xml:space="preserve">
     <value>Example: Personal</value>
   </data>
+  <data name="EmptyContent_Undetected_Title" xml:space="preserve">
+    <value>Microsoft Edge not found</value>
+  </data>
+  <data name="EmptyContent_Undetected_Subtitle" xml:space="preserve">
+    <value>Try switching to a different channel in the extension settings</value>
+  </data>
+  <data name="EmptyContent_Search_Title" xml:space="preserve">
+    <value>No items found</value>
+  </data>
 </root>

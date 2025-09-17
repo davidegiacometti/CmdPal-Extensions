@@ -212,4 +212,13 @@
   <data name="Setting_ExcludedProfiles_Placeholder" xml:space="preserve">
     <value>Esempio: Personale</value>
   </data>
+  <data name="EmptyContent_Undetected_Title" xml:space="preserve">
+    <value>Microsoft Edge non trovato</value>
+  </data>
+  <data name="EmptyContent_Undetected_Subtitle" xml:space="preserve">
+    <value>Prova ad impostare un canale diverso nelle impostazioni dell'estensione</value>
+  </data>
+  <data name="EmptyContent_Search_Title" xml:space="preserve">
+    <value>Nessun elemento trovato</value>
+  </data>
 </root>

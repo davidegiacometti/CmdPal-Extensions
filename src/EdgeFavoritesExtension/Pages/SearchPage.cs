@@ -28,7 +28,8 @@ namespace EdgeFavoritesExtension.Pages
 #if DEBUG
             Name += " (Dev)";
 #endif
-            Icon = Consts.Icon;
+            Icon = Helper.ExtensionIcon;
+            EmptyContent = Helper.GetEmptyContent(_edgeManager.ChannelDetected);
         }
 
         public override IListItem[] GetItems()

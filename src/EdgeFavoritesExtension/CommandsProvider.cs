@@ -27,7 +27,7 @@ namespace EdgeFavoritesExtension
 #if DEBUG
             DisplayName += " (Dev)";
 #endif
-            Icon = Consts.Icon;
+            Icon = Helper.ExtensionIcon;
 
             _commands = new ICommandItem[1];
             _settingsManager.Settings.SettingsChanged += OnSettingsChanged;
