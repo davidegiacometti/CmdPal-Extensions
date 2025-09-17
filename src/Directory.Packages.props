@@ -1,10 +1,10 @@
 <Project>
   <ItemGroup>
-    <PackageVersion Include="Microsoft.CommandPalette.Extensions" Version="0.2.0" />
-    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.7.250401001" />
-    <PackageVersion Include="Serilog" Version="4.2.0" />
+    <PackageVersion Include="Microsoft.CommandPalette.Extensions" Version="0.5.250829002" />
+    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.7.250513003" />
+    <PackageVersion Include="Serilog" Version="4.3.0" />
     <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
-    <PackageVersion Include="Shmuelie.WinRTServer" Version="2.1.1" />
+    <PackageVersion Include="Shmuelie.WinRTServer" Version="2.2.1" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
   </ItemGroup>
 </Project>

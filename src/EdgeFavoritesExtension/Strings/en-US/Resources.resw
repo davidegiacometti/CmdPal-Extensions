@@ -146,16 +146,15 @@
     <comment>{0} is the favorite path, {1} is the profile name</comment>
   </data>
   <data name="WorkspaceResult_Profile_Subtitle" xml:space="preserve">
-    <value>Workspace: {0} - {1}</value>
-    <comment>{0} is the workspace name, {1} is the profile name</comment>
+    <value>Workspace: {0}</value>
+    <comment>{0} is the profile name</comment>
   </data>
   <data name="FavoriteResult_Subtitle" xml:space="preserve">
     <value>Favorite: {0}</value>
     <comment>{0} is the favorite path</comment>
   </data>
   <data name="WorkspaceResult_Subtitle" xml:space="preserve">
-    <value>Workspace: {0}</value>
-    <comment>{0} is the workspace name</comment>
+    <value>Workspace</value>
   </data>
   <data name="FolderResult_Profile_Subtitle" xml:space="preserve">
     <value>Folder: {0} - {1}</value>
@@ -168,11 +167,11 @@
   <data name="Name" xml:space="preserve">
     <value>Edge Favorites</value>
   </data>
-  <data name="SearchMode_Flat" xml:space="preserve">
-    <value>Flat (favorites and folders)</value>
+  <data name="SearchMode_FlatNoFolders" xml:space="preserve">
+    <value>Flat (without folders)</value>
   </data>
-  <data name="SearchMode_FlatFavorites" xml:space="preserve">
-    <value>Flat (favorites only)</value>
+  <data name="SearchMode_FlatAll" xml:space="preserve">
+    <value>Flat</value>
   </data>
   <data name="SearchMode_Tree" xml:space="preserve">
     <value>Tree</value>

@@ -146,7 +146,7 @@
     <comment>{0} is the favorite path, {1} is the profile name</comment>
   </data>
   <data name="WorkspaceResult_Profile_Subtitle" xml:space="preserve">
-    <value>Area di lavoro: {0} - {1}</value>
+    <value>Area di lavoro: {0}</value>
     <comment>{0} is the favorite path, {1} is the profile name</comment>
   </data>
   <data name="FavoriteResult_Subtitle" xml:space="preserve">
@@ -154,8 +154,7 @@
     <comment>{0} is the favorite path</comment>
   </data>
   <data name="WorkspaceResult_Subtitle" xml:space="preserve">
-    <value>Area di lavoro: {0}</value>
-    <comment>{0} is the favorite path</comment>
+    <value>Area di lavoro</value>
   </data>
   <data name="FolderResult_Profile_Subtitle" xml:space="preserve">
     <value>Cartella: {0} - {1}</value>
@@ -168,11 +167,11 @@
   <data name="Name" xml:space="preserve">
     <value>Preferiti Edge</value>
   </data>
-  <data name="SearchMode_Flat" xml:space="preserve">
-    <value>Piatta (preferiti e cartelle)</value>
+  <data name="SearchMode_FlatNoFolders" xml:space="preserve">
+    <value>Piatta (senza cartelle)</value>
   </data>
-  <data name="SearchMode_FlatFavorites" xml:space="preserve">
-    <value>Piatta (solo preferiti)</value>
+  <data name="SearchMode_FlatAll" xml:space="preserve">
+    <value>Piatta</value>
   </data>
   <data name="SearchMode_Tree" xml:space="preserve">
     <value>Albero</value>

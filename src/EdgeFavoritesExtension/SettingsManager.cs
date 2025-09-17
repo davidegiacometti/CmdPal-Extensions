@@ -16,8 +16,8 @@ namespace EdgeFavoritesExtension
             "Setting_SearchMode_Label".GetLocalized(),
             "Setting_SearchMode_Description".GetLocalized(),
             [
-                new("SearchMode_Flat".GetLocalized(), "Flat"),
-                new("SearchMode_FlatFavorites".GetLocalized(), "FlatFavorites"),
+                new("SearchMode_FlatAll".GetLocalized(), "Flat"),
+                new("SearchMode_FlatNoFolders".GetLocalized(), "FlatFavorites"),
                 new("SearchMode_Tree".GetLocalized(), "Tree"),
             ]);
 

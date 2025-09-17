@@ -41,8 +41,8 @@ namespace EdgeFavoritesExtension
             {
                 Command = new OpenEdgeCommand(edgeManager, favorite, false, false);
                 Subtitle = settingsManager.SearchMode == SearchMode.Tree && profileManager.FavoriteProviders.Count > 1
-                    ? string.Format(CultureInfo.CurrentCulture, "WorkspaceResult_Profile_Subtitle".GetLocalized(), favorite.Name, favorite.Profile.Name)
-                    : string.Format(CultureInfo.CurrentCulture, "WorkspaceResult_Subtitle".GetLocalized(), favorite.Name);
+                    ? string.Format(CultureInfo.CurrentCulture, "WorkspaceResult_Profile_Subtitle".GetLocalized(), favorite.Profile.Name)
+                    : "WorkspaceResult_Subtitle".GetLocalized();
                 Icon = new IconInfo("\uF5ED");
             }
             else

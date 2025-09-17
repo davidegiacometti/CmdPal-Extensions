@@ -109,7 +109,7 @@ namespace EdgeFavoritesExtension.Services
             {
                 var type = typeProperty.GetString();
 
-                // Workspace root folder
+                // Workspace root folder has workspace as type
                 if (type == "workspace" && specialFolder)
                 {
                     root = true;
