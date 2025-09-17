@@ -19,7 +19,7 @@ namespace EdgeFavoritesExtension
             : base(new NoOpCommand())
         {
             Title = favorite.Name;
-            MoreCommands = GetMoreCommands(favorite, edgeManager, settingsManager);
+            MoreCommands = GetMoreCommands(favorite, edgeManager);
 
             if (favorite.Type == FavoriteType.Folder)
             {
@@ -51,7 +51,7 @@ namespace EdgeFavoritesExtension
             }
         }
 
-        private static IContextItem[] GetMoreCommands(FavoriteItem favorite, EdgeManager edgeManager, SettingsManager settingsManager)
+        private static IContextItem[] GetMoreCommands(FavoriteItem favorite, EdgeManager edgeManager)
         {
             if (favorite.Type == FavoriteType.Folder)
             {
