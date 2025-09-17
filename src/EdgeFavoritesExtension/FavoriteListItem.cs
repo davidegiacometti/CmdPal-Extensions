@@ -24,7 +24,7 @@ namespace EdgeFavoritesExtension
             if (favorite.Type == FavoriteType.Folder)
             {
                 Command = new NoOpCommand();
-                Subtitle = settingsManager.SearchMode == SearchMode.Tree && profileManager.FavoriteProviders.Count > 1
+                Subtitle = profileManager.FavoriteProviders.Count > 1
                     ? string.Format(CultureInfo.CurrentCulture, "FolderResult_Profile_Subtitle".GetLocalized(), favorite.Path, favorite.Profile.Name)
                     : string.Format(CultureInfo.CurrentCulture, "FolderResult_Subtitle".GetLocalized(), favorite.Path);
                 Icon = new IconInfo("\uE8B7");
@@ -32,7 +32,7 @@ namespace EdgeFavoritesExtension
             else if (favorite.Type == FavoriteType.Url)
             {
                 Command = new OpenEdgeCommand(edgeManager, favorite, false, false);
-                Subtitle = settingsManager.SearchMode == SearchMode.Tree && profileManager.FavoriteProviders.Count > 1
+                Subtitle = profileManager.FavoriteProviders.Count > 1
                     ? string.Format(CultureInfo.CurrentCulture, "FavoriteResult_Profile_Subtitle".GetLocalized(), favorite.Path, favorite.Profile.Name)
                     : string.Format(CultureInfo.CurrentCulture, "FavoriteResult_Subtitle".GetLocalized(), favorite.Path);
                 Icon = new IconInfo("\uE734");
@@ -40,7 +40,7 @@ namespace EdgeFavoritesExtension
             else if (favorite.Type == FavoriteType.Workspace)
             {
                 Command = new OpenEdgeCommand(edgeManager, favorite, false, false);
-                Subtitle = settingsManager.SearchMode == SearchMode.Tree && profileManager.FavoriteProviders.Count > 1
+                Subtitle = profileManager.FavoriteProviders.Count > 1
                     ? string.Format(CultureInfo.CurrentCulture, "WorkspaceResult_Profile_Subtitle".GetLocalized(), favorite.Profile.Name)
                     : "WorkspaceResult_Subtitle".GetLocalized();
                 Icon = new IconInfo("\uF5ED");
