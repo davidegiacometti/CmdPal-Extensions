@@ -7,6 +7,6 @@ namespace VisualStudioExtension
 {
     public static class Consts
     {
-        public static readonly IconInfo Icon = IconHelpers.FromRelativePath(@"Assets\VisualStudio.png");
+        public static readonly IconInfo Icon = IconHelpers.FromRelativePath(@"Assets\VisualStudio.svg");
     }
 }

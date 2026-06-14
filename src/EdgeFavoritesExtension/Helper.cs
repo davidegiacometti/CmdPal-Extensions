@@ -8,7 +8,7 @@ namespace EdgeFavoritesExtension
 {
     internal static class Helper
     {
-        internal static readonly IconInfo ExtensionIcon = IconHelpers.FromRelativePath(@"Assets\EdgeFavorites.png");
+        internal static readonly IconInfo ExtensionIcon = IconHelpers.FromRelativePath(@"Assets\EdgeFavorites.svg");
 
         private static readonly IconInfo UndetectedIcon = new("\uE7BA");
         private static readonly IconInfo NotFoundIcon = new("\uE728");
