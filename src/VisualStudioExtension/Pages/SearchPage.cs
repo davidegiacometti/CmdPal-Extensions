@@ -7,46 +7,45 @@ using Community.PowerToys.Run.Plugin.VisualStudio.Core.Services;
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 
-namespace VisualStudioExtension.Pages
+namespace VisualStudioExtension.Pages;
+
+internal sealed partial class SearchPage : ListPage
 {
-    internal sealed partial class SearchPage : ListPage
+    private readonly VisualStudioService _visualStudioService;
+    private readonly SettingsManager _settingsManager;
+
+    public SearchPage(SettingsManager settingsManager, VisualStudioService visualStudioService)
     {
-        private readonly VisualStudioService _visualStudioService;
-        private readonly SettingsManager _settingsManager;
+        _settingsManager = settingsManager;
+        _visualStudioService = visualStudioService;
 
-        public SearchPage(SettingsManager settingsManager, VisualStudioService visualStudioService)
-        {
-            _settingsManager = settingsManager;
-            _visualStudioService = visualStudioService;
-
-            Name = "Name".GetLocalized();
+        Name = "Name".GetLocalized();
 #if DEBUG
-            Name += " (Dev)";
+        Name += " (Dev)";
 #endif
-            Icon = Consts.Icon;
+        Icon = Consts.Icon;
+    }
+
+    public override IListItem[] GetItems()
+    {
+        var items = Search();
+        if (_settingsManager.SortLastUsed)
+        {
+            items = items.OrderByDescending(i => i.LastAccessed);
+        }
+        else
+        {
+            items = items.OrderBy(i => i.Title);
         }
 
-        public override IListItem[] GetItems()
-        {
-            var items = Search();
-            if (_settingsManager.SortLastUsed)
-            {
-                items = items.OrderByDescending(i => i.LastAccessed);
-            }
-            else
-            {
-                items = items.OrderBy(i => i.Title);
-            }
+        return items.ToArray();
+    }
 
-            return items.ToArray();
-        }
-
-        private IEnumerable<CodeContainerListItem> Search()
+    private IEnumerable<CodeContainerListItem> Search()
+    {
+        foreach (var r in _visualStudioService.GetResults(_settingsManager.ShowPrerelease))
         {
-            foreach (var r in _visualStudioService.GetResults(_settingsManager.ShowPrerelease))
-            {
-                yield return new CodeContainerListItem(r, _settingsManager);
-            }
+            yield return new CodeContainerListItem(r, _settingsManager);
         }
     }
 }

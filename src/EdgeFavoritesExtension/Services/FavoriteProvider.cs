@@ -6,189 +6,188 @@ using System.IO;
 using System.Text.Json;
 using EdgeFavoritesExtension.Models;
 
-namespace EdgeFavoritesExtension.Services
+namespace EdgeFavoritesExtension.Services;
+
+internal sealed partial class FavoriteProvider : IFavoriteProvider, IDisposable
 {
-    internal sealed partial class FavoriteProvider : IFavoriteProvider, IDisposable
+    private readonly Logger _logger;
+    private readonly string _path;
+    private readonly FileSystemWatcher _watcher;
+    private FavoriteItem _root;
+    private bool _disposed;
+
+    public FavoriteItem Root => _root;
+
+    public ProfileInfo ProfileInfo { get; }
+
+    public FavoriteProvider(Logger logger, string path, ProfileInfo profileInfo)
     {
-        private readonly Logger _logger;
-        private readonly string _path;
-        private readonly FileSystemWatcher _watcher;
-        private FavoriteItem _root;
-        private bool _disposed;
+        _logger = logger;
+        _path = path;
+        ProfileInfo = profileInfo;
+        _root = FavoriteItem.CreateRoot(profileInfo);
+        InitFavorites();
 
-        public FavoriteItem Root => _root;
-
-        public ProfileInfo ProfileInfo { get; }
-
-        public FavoriteProvider(Logger logger, string path, ProfileInfo profileInfo)
+        _watcher = new FileSystemWatcher
         {
-            _logger = logger;
-            _path = path;
-            ProfileInfo = profileInfo;
-            _root = FavoriteItem.CreateRoot(profileInfo);
-            InitFavorites();
+            Path = Path.GetDirectoryName(_path)!,
+            Filter = Path.GetFileName(_path),
+            NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.LastWrite,
+        };
 
-            _watcher = new FileSystemWatcher
-            {
-                Path = Path.GetDirectoryName(_path)!,
-                Filter = Path.GetFileName(_path),
-                NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.LastWrite,
-            };
+        _watcher.Changed += (s, e) => InitFavorites();
+        _watcher.EnableRaisingEvents = true;
+    }
 
-            _watcher.Changed += (s, e) => InitFavorites();
-            _watcher.EnableRaisingEvents = true;
+    public void Dispose()
+    {
+        if (_disposed)
+        {
+            return;
         }
 
-        public void Dispose()
+        _watcher?.Dispose();
+        _disposed = true;
+    }
+
+    private void InitFavorites()
+    {
+        try
         {
-            if (_disposed)
+            if (!Path.Exists(_path))
+            {
+                _logger.LogWarning($"Failed to find Bookmarks file: {_path}", typeof(FavoriteProvider));
+                return;
+            }
+
+            using var fs = new FileStream(_path, FileMode.Open, FileAccess.Read);
+            using var sr = new StreamReader(fs);
+            string json = sr.ReadToEnd();
+            var parsed = JsonDocument.Parse(json);
+            parsed.RootElement.TryGetProperty("roots", out var rootElement);
+            if (rootElement.ValueKind != JsonValueKind.Object)
             {
                 return;
             }
 
-            _watcher?.Dispose();
-            _disposed = true;
-        }
-
-        private void InitFavorites()
-        {
-            try
+            var root = FavoriteItem.CreateRoot(ProfileInfo);
+            rootElement.TryGetProperty("bookmark_bar", out var bookmarkBarElement);
+            if (bookmarkBarElement.ValueKind == JsonValueKind.Object)
             {
-                if (!Path.Exists(_path))
-                {
-                    _logger.LogWarning($"Failed to find Bookmarks file: {_path}", typeof(FavoriteProvider));
-                    return;
-                }
-
-                using var fs = new FileStream(_path, FileMode.Open, FileAccess.Read);
-                using var sr = new StreamReader(fs);
-                string json = sr.ReadToEnd();
-                var parsed = JsonDocument.Parse(json);
-                parsed.RootElement.TryGetProperty("roots", out var rootElement);
-                if (rootElement.ValueKind != JsonValueKind.Object)
-                {
-                    return;
-                }
-
-                var root = FavoriteItem.CreateRoot(ProfileInfo);
-                rootElement.TryGetProperty("bookmark_bar", out var bookmarkBarElement);
-                if (bookmarkBarElement.ValueKind == JsonValueKind.Object)
-                {
-                    ProcessFavorites(bookmarkBarElement, root, string.Empty, true, false);
-                }
-
-                rootElement.TryGetProperty("other", out var otherElement);
-                if (otherElement.ValueKind == JsonValueKind.Object)
-                {
-                    ProcessFavorites(otherElement, root, string.Empty, root.Children.Count == 0, true);
-                }
-
-                rootElement.TryGetProperty("synced", out var syncedElement);
-                if (syncedElement.ValueKind == JsonValueKind.Object)
-                {
-                    ProcessFavorites(syncedElement, root, string.Empty, root.Children.Count == 0, true);
-                }
-
-                rootElement.TryGetProperty("workspaces", out var workspacesElement);
-                if (workspacesElement.ValueKind == JsonValueKind.Object)
-                {
-                    ProcessFavorites(workspacesElement, root, string.Empty, root.Children.Count == 0, true);
-                }
-
-                _root = root;
+                ProcessFavorites(bookmarkBarElement, root, string.Empty, true, false);
             }
-            catch (Exception ex)
+
+            rootElement.TryGetProperty("other", out var otherElement);
+            if (otherElement.ValueKind == JsonValueKind.Object)
             {
-                _logger.LogError(ex, $"Failed to read favorites: {_path}", typeof(FavoriteProvider));
+                ProcessFavorites(otherElement, root, string.Empty, root.Children.Count == 0, true);
             }
-        }
 
-        private void ProcessFavorites(JsonElement element, FavoriteItem parent, string path, bool root, bool specialFolder)
-        {
-            if (element.ValueKind == JsonValueKind.Object && element.TryGetProperty("type", out var typeProperty))
+            rootElement.TryGetProperty("synced", out var syncedElement);
+            if (syncedElement.ValueKind == JsonValueKind.Object)
             {
-                var type = typeProperty.GetString();
+                ProcessFavorites(syncedElement, root, string.Empty, root.Children.Count == 0, true);
+            }
 
-                // Workspace root folder has workspace as type
-                if (type == "workspace" && specialFolder)
-                {
-                    root = true;
-                    type = "folder";
-                }
+            rootElement.TryGetProperty("workspaces", out var workspacesElement);
+            if (workspacesElement.ValueKind == JsonValueKind.Object)
+            {
+                ProcessFavorites(workspacesElement, root, string.Empty, root.Children.Count == 0, true);
+            }
 
-                switch (type)
-                {
-                    case "folder":
+            _root = root;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Failed to read favorites: {_path}", typeof(FavoriteProvider));
+        }
+    }
+
+    private void ProcessFavorites(JsonElement element, FavoriteItem parent, string path, bool root, bool specialFolder)
+    {
+        if (element.ValueKind == JsonValueKind.Object && element.TryGetProperty("type", out var typeProperty))
+        {
+            var type = typeProperty.GetString();
+
+            // Workspace root folder has workspace as type
+            if (type == "workspace" && specialFolder)
+            {
+                root = true;
+                type = "folder";
+            }
+
+            switch (type)
+            {
+                case "folder":
+                    {
+                        if (element.TryGetProperty("children", out var children))
                         {
-                            if (element.TryGetProperty("children", out var children))
+                            var name = element.GetProperty("name").GetString();
+                            if (!string.IsNullOrWhiteSpace(name))
                             {
-                                var name = element.GetProperty("name").GetString();
-                                if (!string.IsNullOrWhiteSpace(name))
-                                {
-                                    if (!root)
-                                    {
-                                        path += $"{(string.IsNullOrWhiteSpace(path) ? string.Empty : "/")}{name}";
-                                    }
-
-                                    var folder = FavoriteItem.CreateFolder(name, path, ProfileInfo, specialFolder);
-
-                                    if (root)
-                                    {
-                                        folder = parent;
-                                    }
-                                    else
-                                    {
-                                        parent.AddChildren(folder);
-                                    }
-
-                                    if (children.ValueKind == JsonValueKind.Array)
-                                    {
-                                        using var childEnumerator = children.EnumerateArray();
-                                        foreach (var child in childEnumerator)
-                                        {
-                                            ProcessFavorites(child, folder, path, false, false);
-                                        }
-                                    }
-                                }
-                            }
-
-                            break;
-                        }
-
-                    case "url":
-                        {
-                            if (element.TryGetProperty("url", out var urlProperty))
-                            {
-                                var name = element.GetProperty("name").GetString();
-                                var url = urlProperty.GetString();
-                                if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(url))
+                                if (!root)
                                 {
                                     path += $"{(string.IsNullOrWhiteSpace(path) ? string.Empty : "/")}{name}";
-                                    var favorite = FavoriteItem.CreateUrl(name, url, path, ProfileInfo);
-                                    parent.AddChildren(favorite);
                                 }
-                            }
 
-                            break;
-                        }
+                                var folder = FavoriteItem.CreateFolder(name, path, ProfileInfo, specialFolder);
 
-                    case "workspace":
-                        {
-                            if (element.TryGetProperty("workspace_id", out var workspaceIdProperty))
-                            {
-                                var name = element.GetProperty("name").GetString();
-                                var workspaceId = workspaceIdProperty.GetString();
-                                if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(workspaceId))
+                                if (root)
                                 {
-                                    path += $"{(string.IsNullOrWhiteSpace(path) ? string.Empty : "/")}{name}";
-                                    var workspace = FavoriteItem.CreateWorkspace(name, path, workspaceId, ProfileInfo);
-                                    parent.AddChildren(workspace);
+                                    folder = parent;
+                                }
+                                else
+                                {
+                                    parent.AddChildren(folder);
+                                }
+
+                                if (children.ValueKind == JsonValueKind.Array)
+                                {
+                                    using var childEnumerator = children.EnumerateArray();
+                                    foreach (var child in childEnumerator)
+                                    {
+                                        ProcessFavorites(child, folder, path, false, false);
+                                    }
                                 }
                             }
-
-                            break;
                         }
-                }
+
+                        break;
+                    }
+
+                case "url":
+                    {
+                        if (element.TryGetProperty("url", out var urlProperty))
+                        {
+                            var name = element.GetProperty("name").GetString();
+                            var url = urlProperty.GetString();
+                            if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(url))
+                            {
+                                path += $"{(string.IsNullOrWhiteSpace(path) ? string.Empty : "/")}{name}";
+                                var favorite = FavoriteItem.CreateUrl(name, url, path, ProfileInfo);
+                                parent.AddChildren(favorite);
+                            }
+                        }
+
+                        break;
+                    }
+
+                case "workspace":
+                    {
+                        if (element.TryGetProperty("workspace_id", out var workspaceIdProperty))
+                        {
+                            var name = element.GetProperty("name").GetString();
+                            var workspaceId = workspaceIdProperty.GetString();
+                            if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(workspaceId))
+                            {
+                                path += $"{(string.IsNullOrWhiteSpace(path) ? string.Empty : "/")}{name}";
+                                var workspace = FavoriteItem.CreateWorkspace(name, path, workspaceId, ProfileInfo);
+                                parent.AddChildren(workspace);
+                            }
+                        }
+
+                        break;
+                    }
             }
         }
     }

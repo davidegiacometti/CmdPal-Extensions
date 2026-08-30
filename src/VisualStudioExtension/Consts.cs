@@ -3,10 +3,9 @@
 
 using Microsoft.CommandPalette.Extensions.Toolkit;
 
-namespace VisualStudioExtension
+namespace VisualStudioExtension;
+
+public static class Consts
 {
-    public static class Consts
-    {
-        public static readonly IconInfo Icon = IconHelpers.FromRelativePath(@"Assets\VisualStudio.svg");
-    }
+    public static readonly IconInfo Icon = IconHelpers.FromRelativePath(@"Assets\VisualStudio.svg");
 }

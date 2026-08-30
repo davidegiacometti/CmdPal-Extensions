@@ -3,18 +3,17 @@
 
 using EdgeFavoritesExtension.Models;
 
-namespace EdgeFavoritesExtension.Services
+namespace EdgeFavoritesExtension.Services;
+
+internal interface IEdgeManager
 {
-    internal interface IEdgeManager
-    {
-        string UserDataPath { get; }
+    string UserDataPath { get; }
 
-        bool ChannelDetected { get; }
+    bool ChannelDetected { get; }
 
-        void Initialize(Channel channel);
+    void Initialize(Channel channel);
 
-        bool Open(FavoriteItem favorite, bool inPrivate, bool newWindow);
+    bool Open(FavoriteItem favorite, bool inPrivate, bool newWindow);
 
-        bool Open(FavoriteItem[] favorites, bool inPrivate, bool newWindow);
-    }
+    bool Open(FavoriteItem[] favorites, bool inPrivate, bool newWindow);
 }

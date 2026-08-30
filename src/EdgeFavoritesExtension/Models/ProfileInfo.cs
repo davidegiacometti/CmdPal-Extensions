@@ -1,18 +1,17 @@
 ﻿// Copyright (c) Davide Giacometti. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-namespace EdgeFavoritesExtension.Models
+namespace EdgeFavoritesExtension.Models;
+
+internal class ProfileInfo
 {
-    internal class ProfileInfo
+    public string Name { get; set; }
+
+    public string Directory { get; private set; }
+
+    public ProfileInfo(string name, string directory)
     {
-        public string Name { get; set; }
-
-        public string Directory { get; private set; }
-
-        public ProfileInfo(string name, string directory)
-        {
-            Name = name;
-            Directory = directory;
-        }
+        Name = name;
+        Directory = directory;
     }
 }

@@ -1,0 +1,4 @@
+[*.cs]
+
+file_header_template = Copyright (c) Davide Giacometti. All rights reserved.\nLicensed under the MIT license. See LICENSE file in the project root for full license information.
+csharp_style_namespace_declarations = file_scoped

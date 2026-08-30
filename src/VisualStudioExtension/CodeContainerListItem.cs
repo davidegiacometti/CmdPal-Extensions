@@ -7,32 +7,31 @@ using Microsoft.CommandPalette.Extensions.Toolkit;
 using VisualStudioExtension.Commands;
 using Windows.System;
 
-namespace VisualStudioExtension
+namespace VisualStudioExtension;
+
+internal partial class CodeContainerListItem : ListItem
 {
-    internal partial class CodeContainerListItem : ListItem
+    public DateTime LastAccessed { get; }
+
+    public CodeContainerListItem(CodeContainer codeContainer, SettingsManager settingsManager)
+        : base(new OpenVisualStudioCommand(codeContainer, false))
     {
-        public DateTime LastAccessed { get; }
+        Title = codeContainer.Name;
+        Icon = new IconInfo(codeContainer.Instance.InstancePath);
+        Subtitle = string.Format("Result_Subtitle".GetLocalized(), codeContainer.Instance.DisplayName, codeContainer.FullPath);
+        MoreCommands =
+        [
+            new CommandContextItem(new OpenVisualStudioCommand(codeContainer, true)),
+            new CommandContextItem(new CopyTextCommand(codeContainer.FullPath))
+            {
+                RequestedShortcut = KeyChordHelpers.FromModifiers(true, false, false, false, (int)VirtualKey.C, 0),
+            },
+            new CommandContextItem(new OpenFolderCommand(codeContainer))
+            {
+                RequestedShortcut = KeyChordHelpers.FromModifiers(true, false, false, false, (int)VirtualKey.E, 0),
+            },
+        ];
 
-        public CodeContainerListItem(CodeContainer codeContainer, SettingsManager settingsManager)
-            : base(new OpenVisualStudioCommand(codeContainer, false))
-        {
-            Title = codeContainer.Name;
-            Icon = new IconInfo(codeContainer.Instance.InstancePath);
-            Subtitle = string.Format("Result_Subtitle".GetLocalized(), codeContainer.Instance.DisplayName, codeContainer.FullPath);
-            MoreCommands =
-            [
-                new CommandContextItem(new OpenVisualStudioCommand(codeContainer, true)),
-                new CommandContextItem(new CopyTextCommand(codeContainer.FullPath))
-                {
-                    RequestedShortcut = KeyChordHelpers.FromModifiers(true, false, false, false, (int)VirtualKey.C, 0),
-                },
-                new CommandContextItem(new OpenFolderCommand(codeContainer))
-                {
-                    RequestedShortcut = KeyChordHelpers.FromModifiers(true, false, false, false, (int)VirtualKey.E, 0),
-                },
-            ];
-
-            LastAccessed = codeContainer.LastAccessed;
-        }
+        LastAccessed = codeContainer.LastAccessed;
     }
 }

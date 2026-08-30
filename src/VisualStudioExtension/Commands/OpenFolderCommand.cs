@@ -8,35 +8,34 @@ using Community.PowerToys.Run.Plugin.VisualStudio.Core.Models;
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 
-namespace VisualStudioExtension.Commands
+namespace VisualStudioExtension.Commands;
+
+internal partial class OpenFolderCommand : InvokableCommand
 {
-    internal partial class OpenFolderCommand : InvokableCommand
+    private readonly string _fileName;
+
+    public OpenFolderCommand(CodeContainer codeContainer)
     {
-        private readonly string _fileName;
+        _fileName = Path.GetDirectoryName(codeContainer.FullPath) ?? string.Empty;
 
-        public OpenFolderCommand(CodeContainer codeContainer)
+        Icon = new("\uE838");
+        Name = "Command_OpenFolder".GetLocalized();
+    }
+
+    public override ICommandResult Invoke()
+    {
+        using var process = new Process();
+        process.StartInfo.FileName = _fileName;
+        process.StartInfo.UseShellExecute = true;
+
+        try
         {
-            _fileName = Path.GetDirectoryName(codeContainer.FullPath) ?? string.Empty;
-
-            Icon = new("\uE838");
-            Name = "Command_OpenFolder".GetLocalized();
+            process.Start();
+        }
+        catch (Win32Exception)
+        {
         }
 
-        public override ICommandResult Invoke()
-        {
-            using var process = new Process();
-            process.StartInfo.FileName = _fileName;
-            process.StartInfo.UseShellExecute = true;
-
-            try
-            {
-                process.Start();
-            }
-            catch (Win32Exception)
-            {
-            }
-
-            return CommandResult.Dismiss();
-        }
+        return CommandResult.Dismiss();
     }
 }

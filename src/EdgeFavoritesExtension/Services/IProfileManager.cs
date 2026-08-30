@@ -4,12 +4,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace EdgeFavoritesExtension.Services
-{
-    internal interface IProfileManager
-    {
-        ReadOnlyCollection<IFavoriteProvider> FavoriteProviders { get; }
+namespace EdgeFavoritesExtension.Services;
 
-        void ReloadProfiles(IEnumerable<string> excluded);
-    }
+internal interface IProfileManager
+{
+    ReadOnlyCollection<IFavoriteProvider> FavoriteProviders { get; }
+
+    void ReloadProfiles(IEnumerable<string> excluded);
 }

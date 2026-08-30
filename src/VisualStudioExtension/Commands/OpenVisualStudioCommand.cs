@@ -7,47 +7,46 @@ using Community.PowerToys.Run.Plugin.VisualStudio.Core.Models;
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 
-namespace VisualStudioExtension.Commands
+namespace VisualStudioExtension.Commands;
+
+internal partial class OpenVisualStudioCommand : InvokableCommand
 {
-    internal partial class OpenVisualStudioCommand : InvokableCommand
+    private readonly bool _elevated;
+    private readonly string _fileName;
+    private readonly string _arguments;
+
+    public OpenVisualStudioCommand(CodeContainer codeContainer, bool elevated)
     {
-        private readonly bool _elevated;
-        private readonly string _fileName;
-        private readonly string _arguments;
+        _elevated = elevated;
+        _fileName = codeContainer.Instance.InstancePath;
+        _arguments = $"\"{codeContainer.FullPath}\"";
 
-        public OpenVisualStudioCommand(CodeContainer codeContainer, bool elevated)
+        Icon = new(_elevated ? "\uE7EF" : "\uE737");
+        Name = _elevated
+            ? "Command_OpenAsAdministrator".GetLocalized()
+            : "Command_Open".GetLocalized();
+    }
+
+    public override ICommandResult Invoke()
+    {
+        using var process = new Process();
+        process.StartInfo.FileName = _fileName;
+        process.StartInfo.Arguments = _arguments;
+        process.StartInfo.UseShellExecute = true;
+
+        if (_elevated)
         {
-            _elevated = elevated;
-            _fileName = codeContainer.Instance.InstancePath;
-            _arguments = $"\"{codeContainer.FullPath}\"";
-
-            Icon = new(_elevated ? "\uE7EF" : "\uE737");
-            Name = _elevated
-                ? "Command_OpenAsAdministrator".GetLocalized()
-                : "Command_Open".GetLocalized();
+            process.StartInfo.Verb = "runas";
         }
 
-        public override ICommandResult Invoke()
+        try
         {
-            using var process = new Process();
-            process.StartInfo.FileName = _fileName;
-            process.StartInfo.Arguments = _arguments;
-            process.StartInfo.UseShellExecute = true;
-
-            if (_elevated)
-            {
-                process.StartInfo.Verb = "runas";
-            }
-
-            try
-            {
-                process.Start();
-            }
-            catch (Win32Exception)
-            {
-            }
-
-            return CommandResult.Dismiss();
+            process.Start();
         }
+        catch (Win32Exception)
+        {
+        }
+
+        return CommandResult.Dismiss();
     }
 }

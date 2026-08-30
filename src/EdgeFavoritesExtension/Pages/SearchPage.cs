@@ -8,51 +8,50 @@ using EdgeFavoritesExtension.Services;
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 
-namespace EdgeFavoritesExtension.Pages
+namespace EdgeFavoritesExtension.Pages;
+
+internal sealed partial class SearchPage : ListPage
 {
-    internal sealed partial class SearchPage : ListPage
+    private readonly EdgeManager _edgeManager;
+    private readonly FavoriteQuery _favoriteQuery;
+    private readonly SettingsManager _settingsManager;
+    private readonly ProfileManager _profileManger;
+
+    public SearchPage(EdgeManager edgeManager, FavoriteQuery favoriteQuery, SettingsManager settingsManager, ProfileManager profileManger)
     {
-        private readonly EdgeManager _edgeManager;
-        private readonly FavoriteQuery _favoriteQuery;
-        private readonly SettingsManager _settingsManager;
-        private readonly ProfileManager _profileManger;
+        _edgeManager = edgeManager;
+        _favoriteQuery = favoriteQuery;
+        _settingsManager = settingsManager;
+        _profileManger = profileManger;
 
-        public SearchPage(EdgeManager edgeManager, FavoriteQuery favoriteQuery, SettingsManager settingsManager, ProfileManager profileManger)
-        {
-            _edgeManager = edgeManager;
-            _favoriteQuery = favoriteQuery;
-            _settingsManager = settingsManager;
-            _profileManger = profileManger;
-
-            Name = "Name".GetLocalized();
+        Name = "Name".GetLocalized();
 #if DEBUG
-            Name += " (Dev)";
+        Name += " (Dev)";
 #endif
-            Icon = Helper.ExtensionIcon;
-            EmptyContent = Helper.GetEmptyContent(_edgeManager.ChannelDetected);
+        Icon = Helper.ExtensionIcon;
+        EmptyContent = Helper.GetEmptyContent(_edgeManager.ChannelDetected);
+    }
+
+    public override IListItem[] GetItems()
+    {
+        if (!_edgeManager.ChannelDetected)
+        {
+            return [];
         }
 
-        public override IListItem[] GetItems()
+        return Search().OrderBy(r => r.Title).ToArray();
+    }
+
+    private IEnumerable<FavoriteListItem> Search()
+    {
+        foreach (var f in _favoriteQuery.GetAll().Where(f => !f.IsEmptySpecialFolder))
         {
-            if (!_edgeManager.ChannelDetected)
+            if (f.Type == FavoriteType.Folder && _settingsManager.SearchMode == SearchMode.FlatFavorites)
             {
-                return [];
+                continue;
             }
 
-            return Search().OrderBy(r => r.Title).ToArray();
-        }
-
-        private IEnumerable<FavoriteListItem> Search()
-        {
-            foreach (var f in _favoriteQuery.GetAll().Where(f => !f.IsEmptySpecialFolder))
-            {
-                if (f.Type == FavoriteType.Folder && _settingsManager.SearchMode == SearchMode.FlatFavorites)
-                {
-                    continue;
-                }
-
-                yield return new FavoriteListItem(f, _edgeManager, _settingsManager, _profileManger);
-            }
+            yield return new FavoriteListItem(f, _edgeManager, _settingsManager, _profileManger);
         }
     }
 }

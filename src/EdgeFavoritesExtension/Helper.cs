@@ -4,28 +4,27 @@
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 
-namespace EdgeFavoritesExtension
+namespace EdgeFavoritesExtension;
+
+internal static class Helper
 {
-    internal static class Helper
+    internal static readonly IconInfo ExtensionIcon = IconHelpers.FromRelativePath(@"Assets\EdgeFavorites.svg");
+
+    private static readonly IconInfo UndetectedIcon = new("\uE7BA");
+    private static readonly IconInfo NotFoundIcon = new("\uE728");
+
+    internal static ICommandItem GetEmptyContent(bool edgeChannelDetected)
     {
-        internal static readonly IconInfo ExtensionIcon = IconHelpers.FromRelativePath(@"Assets\EdgeFavorites.svg");
-
-        private static readonly IconInfo UndetectedIcon = new("\uE7BA");
-        private static readonly IconInfo NotFoundIcon = new("\uE728");
-
-        internal static ICommandItem GetEmptyContent(bool edgeChannelDetected)
+        var (icon, title, subtitle) = GetEmptyContentInfo(edgeChannelDetected);
+        return new CommandItem(new NoOpCommand())
         {
-            var (icon, title, subtitle) = GetEmptyContentInfo(edgeChannelDetected);
-            return new CommandItem(new NoOpCommand())
-            {
-                Icon = icon,
-                Title = title,
-                Subtitle = subtitle,
-            };
-        }
-
-        private static (IconInfo Icon, string Title, string Subtitle) GetEmptyContentInfo(bool edgeChannelDetected) => edgeChannelDetected
-            ? (NotFoundIcon, "EmptyContent_Search_Title".GetLocalized(), string.Empty)
-            : (UndetectedIcon, "EmptyContent_Undetected_Title".GetLocalized(), "EmptyContent_Undetected_Subtitle".GetLocalized());
+            Icon = icon,
+            Title = title,
+            Subtitle = subtitle,
+        };
     }
+
+    private static (IconInfo Icon, string Title, string Subtitle) GetEmptyContentInfo(bool edgeChannelDetected) => edgeChannelDetected
+        ? (NotFoundIcon, "EmptyContent_Search_Title".GetLocalized(), string.Empty)
+        : (UndetectedIcon, "EmptyContent_Undetected_Title".GetLocalized(), "EmptyContent_Undetected_Subtitle".GetLocalized());
 }

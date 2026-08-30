@@ -4,12 +4,11 @@
 using System.Collections.Generic;
 using EdgeFavoritesExtension.Models;
 
-namespace EdgeFavoritesExtension.Services
-{
-    internal interface IFavoriteQuery
-    {
-        IEnumerable<FavoriteItem> GetAll();
+namespace EdgeFavoritesExtension.Services;
 
-        IEnumerable<FavoriteItem> Search(string query);
-    }
+internal interface IFavoriteQuery
+{
+    IEnumerable<FavoriteItem> GetAll();
+
+    IEnumerable<FavoriteItem> Search(string query);
 }

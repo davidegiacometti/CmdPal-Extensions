@@ -7,43 +7,42 @@ using System.Runtime.CompilerServices;
 using Serilog;
 using Windows.Storage;
 
-namespace EdgeFavoritesExtension
+namespace EdgeFavoritesExtension;
+
+internal class Logger
 {
-    internal class Logger
+    public Logger()
     {
-        public Logger()
-        {
-            var path = Path.Combine(ApplicationData.Current.TemporaryFolder.Path, "Logs", "Log.log");
+        var path = Path.Combine(ApplicationData.Current.TemporaryFolder.Path, "Logs", "Log.log");
 
-            Log.Logger = new LoggerConfiguration()
-               .MinimumLevel.Information()
-               .WriteTo.File(path, rollingInterval: RollingInterval.Day)
-               .CreateLogger();
-        }
+        Log.Logger = new LoggerConfiguration()
+           .MinimumLevel.Information()
+           .WriteTo.File(path, rollingInterval: RollingInterval.Day)
+           .CreateLogger();
+    }
 
-        public void LogDebug(string message, Type fullClassName, [CallerMemberName] string methodName = "", [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
-        {
-            Log.Debug(message);
-        }
+    public void LogDebug(string message, Type fullClassName, [CallerMemberName] string methodName = "", [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
+    {
+        Log.Debug(message);
+    }
 
-        public void LogError(string message, Type fullClassName, [CallerMemberName] string methodName = "", [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
-        {
-            Log.Error(message);
-        }
+    public void LogError(string message, Type fullClassName, [CallerMemberName] string methodName = "", [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
+    {
+        Log.Error(message);
+    }
 
-        public void LogError(Exception exception, string message, Type fullClassName, [CallerMemberName] string methodName = "", [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
-        {
-            Log.Error(exception, message);
-        }
+    public void LogError(Exception exception, string message, Type fullClassName, [CallerMemberName] string methodName = "", [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
+    {
+        Log.Error(exception, message);
+    }
 
-        public void LogInformation(string message, Type fullClassName, [CallerMemberName] string methodName = "", [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
-        {
-            Log.Information(message);
-        }
+    public void LogInformation(string message, Type fullClassName, [CallerMemberName] string methodName = "", [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
+    {
+        Log.Information(message);
+    }
 
-        public void LogWarning(string message, Type fullClassName, [CallerMemberName] string methodName = "", [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
-        {
-            Log.Warning(message);
-        }
+    public void LogWarning(string message, Type fullClassName, [CallerMemberName] string methodName = "", [CallerFilePath] string sourceFilePath = "", [CallerLineNumber] int sourceLineNumber = 0)
+    {
+        Log.Warning(message);
     }
 }

@@ -9,124 +9,123 @@ using System.Linq;
 using System.Text.Json;
 using EdgeFavoritesExtension.Models;
 
-namespace EdgeFavoritesExtension.Services
+namespace EdgeFavoritesExtension.Services;
+
+internal sealed partial class ProfileManager : IProfileManager, IDisposable
 {
-    internal sealed partial class ProfileManager : IProfileManager, IDisposable
+    private readonly Logger _logger;
+    private readonly EdgeManager _edgeManager;
+    private readonly List<IFavoriteProvider> _favoriteProviders = new();
+    private bool _disposed;
+
+    public ReadOnlyCollection<IFavoriteProvider> FavoriteProviders => _favoriteProviders.AsReadOnly();
+
+    public ProfileManager(Logger logger, EdgeManager edgeManager)
     {
-        private readonly Logger _logger;
-        private readonly EdgeManager _edgeManager;
-        private readonly List<IFavoriteProvider> _favoriteProviders = new();
-        private bool _disposed;
+        _logger = logger;
+        _edgeManager = edgeManager;
+    }
 
-        public ReadOnlyCollection<IFavoriteProvider> FavoriteProviders => _favoriteProviders.AsReadOnly();
+    public void ReloadProfiles(IEnumerable<string> excluded)
+    {
+        var userDataPath = _edgeManager.UserDataPath;
 
-        public ProfileManager(Logger logger, EdgeManager edgeManager)
+        if (!Path.Exists(userDataPath))
         {
-            _logger = logger;
-            _edgeManager = edgeManager;
+            _logger.LogError($"User data {userDataPath} is not a valid path.", typeof(ProfileManager));
+            return;
         }
 
-        public void ReloadProfiles(IEnumerable<string> excluded)
+        if (_favoriteProviders.Count > 0)
         {
-            var userDataPath = _edgeManager.UserDataPath;
-
-            if (!Path.Exists(userDataPath))
-            {
-                _logger.LogError($"User data {userDataPath} is not a valid path.", typeof(ProfileManager));
-                return;
-            }
-
-            if (_favoriteProviders.Count > 0)
-            {
-                DisposeFavoriteProviders();
-                _favoriteProviders.Clear();
-            }
-
-            foreach (var path in Directory.GetFiles(userDataPath, "Bookmarks", new EnumerationOptions { RecurseSubdirectories = true, MaxRecursionDepth = 2 }))
-            {
-                var directory = Directory.GetParent(path);
-
-                if (directory == null)
-                {
-                    continue;
-                }
-
-                // Guest profile doesn't allow favorites
-                if (directory.Name.Equals("Guest Profile", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                var name = GetProfileName(directory.FullName) ?? directory.Name;
-
-                if (excluded.Any(e => e.Equals(name, StringComparison.OrdinalIgnoreCase)))
-                {
-                    continue;
-                }
-
-                var profile = new ProfileInfo(name, directory.Name);
-                _favoriteProviders.Add(new FavoriteProvider(_logger, path, profile));
-            }
-        }
-
-        public void Dispose()
-        {
-            if (_disposed)
-            {
-                return;
-            }
-
             DisposeFavoriteProviders();
-            _disposed = true;
+            _favoriteProviders.Clear();
         }
 
-        private string? GetProfileName(string directoryPath)
+        foreach (var path in Directory.GetFiles(userDataPath, "Bookmarks", new EnumerationOptions { RecurseSubdirectories = true, MaxRecursionDepth = 2 }))
         {
-            try
+            var directory = Directory.GetParent(path);
+
+            if (directory == null)
             {
-                var preferencesPath = Path.Combine(directoryPath, "Preferences");
-                if (!File.Exists(preferencesPath))
-                {
-                    _logger.LogError($"Failed to read profile name: {preferencesPath} files not found.", typeof(ProfileManager));
-                    return null;
-                }
-
-                using var fs = new FileStream(preferencesPath, FileMode.Open, FileAccess.Read);
-                using var sr = new StreamReader(fs);
-                string json = sr.ReadToEnd();
-                var parsed = JsonDocument.Parse(json);
-                parsed.RootElement.TryGetProperty("profile", out var profileElement);
-                profileElement.TryGetProperty("name", out var nameElement);
-                if (nameElement.ValueKind != JsonValueKind.String)
-                {
-                    _logger.LogError("Failed to read profile name: name property is not a string.", typeof(ProfileManager));
-                    return null;
-                }
-
-                var name = nameElement.GetString();
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    _logger.LogError("Failed to read profile name: name property is empty.", typeof(ProfileManager));
-                    return null;
-                }
-
-                return name;
+                continue;
             }
-            catch (Exception ex)
+
+            // Guest profile doesn't allow favorites
+            if (directory.Name.Equals("Guest Profile", StringComparison.OrdinalIgnoreCase))
             {
-                _logger.LogError(ex, "Failed to read profile name", typeof(ProfileManager));
+                continue;
+            }
+
+            var name = GetProfileName(directory.FullName) ?? directory.Name;
+
+            if (excluded.Any(e => e.Equals(name, StringComparison.OrdinalIgnoreCase)))
+            {
+                continue;
+            }
+
+            var profile = new ProfileInfo(name, directory.Name);
+            _favoriteProviders.Add(new FavoriteProvider(_logger, path, profile));
+        }
+    }
+
+    public void Dispose()
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        DisposeFavoriteProviders();
+        _disposed = true;
+    }
+
+    private string? GetProfileName(string directoryPath)
+    {
+        try
+        {
+            var preferencesPath = Path.Combine(directoryPath, "Preferences");
+            if (!File.Exists(preferencesPath))
+            {
+                _logger.LogError($"Failed to read profile name: {preferencesPath} files not found.", typeof(ProfileManager));
                 return null;
             }
-        }
 
-        private void DisposeFavoriteProviders()
-        {
-            foreach (var provider in _favoriteProviders)
+            using var fs = new FileStream(preferencesPath, FileMode.Open, FileAccess.Read);
+            using var sr = new StreamReader(fs);
+            string json = sr.ReadToEnd();
+            var parsed = JsonDocument.Parse(json);
+            parsed.RootElement.TryGetProperty("profile", out var profileElement);
+            profileElement.TryGetProperty("name", out var nameElement);
+            if (nameElement.ValueKind != JsonValueKind.String)
             {
-                if (provider is IDisposable disposableProvider)
-                {
-                    disposableProvider.Dispose();
-                }
+                _logger.LogError("Failed to read profile name: name property is not a string.", typeof(ProfileManager));
+                return null;
+            }
+
+            var name = nameElement.GetString();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                _logger.LogError("Failed to read profile name: name property is empty.", typeof(ProfileManager));
+                return null;
+            }
+
+            return name;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to read profile name", typeof(ProfileManager));
+            return null;
+        }
+    }
+
+    private void DisposeFavoriteProviders()
+    {
+        foreach (var provider in _favoriteProviders)
+        {
+            if (provider is IDisposable disposableProvider)
+            {
+                disposableProvider.Dispose();
             }
         }
     }

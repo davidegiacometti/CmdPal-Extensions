@@ -1,13 +1,12 @@
 ﻿// Copyright (c) Davide Giacometti. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-namespace EdgeFavoritesExtension.Models
+namespace EdgeFavoritesExtension.Models;
+
+internal enum Channel
 {
-    internal enum Channel
-    {
-        Stable = 0,
-        Beta = 1,
-        Dev = 2,
-        Canary = 3,
-    }
+    Stable = 0,
+    Beta = 1,
+    Dev = 2,
+    Canary = 3,
 }
