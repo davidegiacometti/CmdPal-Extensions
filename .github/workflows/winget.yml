@@ -24,10 +24,12 @@ jobs:
           $tag = $targetRelease.tag_name
           $version = $tag -replace '^.*-', ''
 
-          if ($tag.StartsWith("vs")) {
+          if ($tag.StartsWith("vs-")) {
             $package = "davidegiacometti.VisualStudioForCmdPal"
-          } elseif ($tag.StartsWith("ef")) {
+          } elseif ($tag.StartsWith("ef-")) {
             $package = "davidegiacometti.EdgeFavoritesForCmdPal"
+          } elseif ($tag.StartsWith("sn-")) {
+            $package = "davidegiacometti.SnippetsForCmdPal"
           } else {
             exit 1
           }

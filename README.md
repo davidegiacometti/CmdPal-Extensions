@@ -6,6 +6,7 @@ This monorepo is the home for my [PowerToys Command Palette](https://learn.micro
 | --- | --- | --- |
 | <img src="src/EdgeFavoritesExtension/Assets/EdgeFavorites.svg" alt="Edge Favorites Logo" height="40"> | Edge Favorites | Search Microsoft Edge favorites. Based on the existing [PowerToys Run Edge Favorite plugin](https://github.com/davidegiacometti/PowerToys-Run-EdgeFavorite). |
 | <img src="src/VisualStudioExtension/Assets/VisualStudio.svg" alt="Visual Studio Logo" height="40"> | Visual Studio | Search Visual Studio recents. Based on the existing [PowerToys Run Visual Studio plugin](https://github.com/davidegiacometti/PowerToys-Run-VisualStudio). |
+| <img src="src/SnippetsExtension/Assets/Snippets.svg" alt="Snippets Logo" height="40"> | Snippets | Create and manage text snippets that can be quickly auto-typed into an active window. |
 
 ## Installation
 
@@ -28,6 +29,10 @@ winget install davidegiacometti.EdgeFavoritesForCmdPal
 ```powershell
 winget install davidegiacometti.VisualStudioForCmdPal
 ```
+
+**Snippets**
+
+Coming soon!
 
 ### Microsoft Store
 
