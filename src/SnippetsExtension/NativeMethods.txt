@@ -1,6 +1,5 @@
 AttachThreadInput
 GetCurrentThreadId
-GetCurrentProcessId
 GetForegroundWindow
 GetWindow
 GetWindowThreadProcessId
