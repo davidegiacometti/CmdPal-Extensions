@@ -50,7 +50,7 @@ jobs:
         }
 
     - name: Restore packages
-      run: msbuild src\Extensions.sln /t:Restore /p:Configuration=Release
+      run: msbuild src\Extensions.slnx /t:Restore /p:Configuration=Release
 
     - name: Build Visual Studio
       if: startsWith(github.ref, 'refs/tags/vs-') || startsWith(github.ref, 'refs/heads/')
