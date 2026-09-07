@@ -6,6 +6,7 @@ on:
     tags:
       - 'vs-*'
       - 'ef-*'
+      - 'sn-*'
 
 jobs:
   build:
@@ -58,6 +59,10 @@ jobs:
     - name: Build Edge Favorites
       if: startsWith(github.ref, 'refs/tags/ef-') || startsWith(github.ref, 'refs/heads/')
       run: msbuild  src\EdgeFavoritesExtension\EdgeFavoritesExtension.csproj /p:Configuration=Release /p:Platform=${{matrix.platform}} /p:Version=${{env.VERSION}}
+
+    - name: Build Snippets
+      if: startsWith(github.ref, 'refs/tags/sn-') || startsWith(github.ref, 'refs/heads/')
+      run: msbuild  src\SnippetsExtension\SnippetsExtension.csproj /p:Configuration=Release /p:Platform=${{matrix.platform}} /p:Version=${{env.VERSION}}
 
     - name: Prepare artifact
       run: |

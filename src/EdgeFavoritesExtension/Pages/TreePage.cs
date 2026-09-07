@@ -44,7 +44,7 @@ internal sealed partial class TreePage : DynamicListPage
             .OrderBy(f => f.Type)
             .ThenBy(f => f.Name)
             .Where(f => !f.IsEmptySpecialFolder)
-            .Select(f => new FavoriteListItem(f, _edgeManager, _settingsManager, _profileManger))
+            .Select(f => new FavoriteListItem(f, _edgeManager, _profileManger))
             .ToArray();
     }
 }

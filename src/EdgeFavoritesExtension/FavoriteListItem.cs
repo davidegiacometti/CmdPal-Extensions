@@ -15,7 +15,7 @@ namespace EdgeFavoritesExtension;
 
 internal partial class FavoriteListItem : ListItem
 {
-    public FavoriteListItem(FavoriteItem favorite, EdgeManager edgeManager, SettingsManager settingsManager, ProfileManager profileManager)
+    public FavoriteListItem(FavoriteItem favorite, EdgeManager edgeManager, ProfileManager profileManager)
         : base(new NoOpCommand())
     {
         Title = favorite.Name;

@@ -1,0 +1,7 @@
+AttachThreadInput
+GetCurrentThreadId
+GetForegroundWindow
+GetWindow
+GetWindowThreadProcessId
+SendInput
+SetForegroundWindow

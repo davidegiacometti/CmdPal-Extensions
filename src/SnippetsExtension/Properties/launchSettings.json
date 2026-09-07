@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "SnippetsExtension (Package)": {
+      "commandName": "MsixPackage",
+      "commandLineArgs": "-RegisterProcessAsComServer"
+    },
+    "SnippetsExtension (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

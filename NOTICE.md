@@ -5,9 +5,11 @@ This software incorporates material from third parties.
 ## NuGet Packages
 
 - Microsoft.CommandPalette.Extensions
+- Microsoft.Windows.CsWin32
 - Microsoft.WindowsAppSDK
 - Serilog
 - Serilog.Sinks.File
+- Shmuelie.WinRTServer
 - StyleCop.Analyzers
 
 ## Serilog

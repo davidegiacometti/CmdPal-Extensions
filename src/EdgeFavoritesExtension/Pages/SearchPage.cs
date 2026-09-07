@@ -51,7 +51,7 @@ internal sealed partial class SearchPage : ListPage
                 continue;
             }
 
-            yield return new FavoriteListItem(f, _edgeManager, _settingsManager, _profileManger);
+            yield return new FavoriteListItem(f, _edgeManager, _profileManger);
         }
     }
 }
