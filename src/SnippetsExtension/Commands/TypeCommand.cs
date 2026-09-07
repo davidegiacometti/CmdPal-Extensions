@@ -43,7 +43,7 @@ internal partial class TypeCommand : InvokableCommand
         {
             if (WindowHelper.SetForegroundWindow(hwnd))
             {
-                var inputString = _snippetData.Value.Replace("\r\n", "\r").Replace('\n', '\r');
+                var inputString = NormalizeLineEndings(_snippetData.Value);
 
                 Span<INPUT> inputs = stackalloc INPUT[2];
 
@@ -53,7 +53,7 @@ internal partial class TypeCommand : InvokableCommand
                     {
                         System.Threading.Thread.Sleep(20);
 
-                        if (IsLineBreak(c))
+                        if (IsLineEnding(c))
                         {
                             AddLineBreak(ref inputs);
                         }
@@ -98,7 +98,9 @@ internal partial class TypeCommand : InvokableCommand
         return result;
     }
 
-    private static bool IsLineBreak(char c) => c is '\r';
+    private static string NormalizeLineEndings(string value) => value.Replace("\r\n", "\r").Replace('\n', '\r');
+
+    private static bool IsLineEnding(char c) => c is '\r';
 
     private static void AddLineBreak(ref Span<INPUT> inputs)
     {

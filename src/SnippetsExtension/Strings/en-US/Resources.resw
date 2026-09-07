@@ -139,7 +139,7 @@
     <value>Delete snippet?</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Search and type snippets</value>
+    <value>Search and auto-type snippets</value>
   </data>
   <data name="Form_Name" xml:space="preserve">
     <value>Name</value>
@@ -149,6 +149,9 @@
   </data>
   <data name="Form_Value" xml:space="preserve">
     <value>Snippet</value>
+  </data>
+  <data name="Form_Warning" xml:space="preserve">
+    <value>Do not store sensitive information like passwords as snippets, as they are stored in clear text.</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Snippets</value>

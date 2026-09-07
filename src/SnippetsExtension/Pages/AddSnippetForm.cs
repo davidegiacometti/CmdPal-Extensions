@@ -46,7 +46,8 @@ internal sealed partial class AddSnippetForm : FormContent
         },
         {
             "type": "TextBlock",
-            "text": "Do not store sensitive information like passwords as snippets, as they are stored in clear text.",
+            "text": {{EncodeString("Form_Warning".GetLocalized())}},
+            "isSubtle": true,
             "size": "Small"
         }
     ],

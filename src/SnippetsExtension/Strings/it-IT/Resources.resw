@@ -121,7 +121,7 @@
     <value>Aggiungi un nuovo snippet</value>
   </data>
   <data name="Command_Add" xml:space="preserve">
-    <value>Aggiungi</value>
+    <value>Aggiungi snippet</value>
   </data>
   <data name="Command_Delete" xml:space="preserve">
     <value>Elimina</value>
@@ -139,7 +139,7 @@
     <value>Eliminare lo snippet?</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Cerca e inserisci snippet salvati</value>
+    <value>Cerca e digita automaticamente gli snippet</value>
   </data>
   <data name="Form_Name" xml:space="preserve">
     <value>Nome</value>
@@ -149,6 +149,9 @@
   </data>
   <data name="Form_Value" xml:space="preserve">
     <value>Snippet</value>
+  </data>
+  <data name="Form_Warning" xml:space="preserve">
+    <value>Non inserire informazioni sensibili come le password negli snippet perché vengono salvati in chiaro.</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Snippets</value>
