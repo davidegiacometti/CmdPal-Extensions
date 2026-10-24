@@ -1,7 +1,9 @@
 # PRIVACY POLICY
 
 These extensions respect your privacy and do not collect or transmit any personal data.
+
 Settings, data, and logs are stored locally on your device and are not automatically transmitted or shared. You can remove them by deleting the corresponding local files.
+
 Logs may be requested to investigate reported issues and will only be shared at the user's discretion.
 
 ## Edge Favorites
