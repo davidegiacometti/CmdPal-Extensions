@@ -53,4 +53,4 @@ You can install the extensions manually using the MSIX packages available in the
 
 ## Privacy
 
-See [Privacy Policy](PRIVACY_POLICY.md)
+See [Privacy Policy](PRIVACY_POLICY.md).
