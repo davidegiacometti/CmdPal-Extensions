@@ -1,7 +1,23 @@
 # PRIVACY POLICY
 
-These extensions respect your privacy and do not collect or transmit any personal data.  
-Please note that while these extensions store a log locally on your device, this log is not automatically transmitted or shared.  
-However, the log may be requested to help investigate any reported issues, and it will be provided by the user if they are willing to share it.
+These extensions respect your privacy and do not collect or transmit any personal data.
+Settings, data, and logs are stored locally on your device and are not automatically transmitted or shared. You can remove them by deleting the corresponding local files.
+Logs may be requested to investigate reported issues and will only be shared at the user's discretion.
 
-**Last updated: 2025-02-11**
+## Edge Favorites
+
+- **Settings:** `%LOCALAPPDATA%\Packages\DavideGiacometti.EdgeFavoritesForCmdPal_vmjk9v3vswc4e\LocalState\settings.json`
+- **Logs:** `%LOCALAPPDATA%\Packages\DavideGiacometti.EdgeFavoritesForCmdPal_vmjk9v3vswc4e\TempState\Logs`
+
+## Visual Studio
+
+- **Settings:** `%LOCALAPPDATA%\Packages\DavideGiacometti.VisualStudioForCmdPal_vmjk9v3vswc4e\LocalState\settings.json`
+- **Logs:** `%LOCALAPPDATA%\Packages\DavideGiacometti.VisualStudioForCmdPal_vmjk9v3vswc4e\TempState\Logs`
+
+## Snippets
+
+- **Data:** `%LOCALAPPDATA%\Packages\DavideGiacometti.SnippetsForCmdPal_vmjk9v3vswc4e\LocalState\snippets.json`
+- **Settings:** `%LOCALAPPDATA%\Packages\DavideGiacometti.SnippetsForCmdPal_vmjk9v3vswc4e\LocalState\settings.json`
+- **Logs:** `%LOCALAPPDATA%\Packages\DavideGiacometti.SnippetsForCmdPal_vmjk9v3vswc4e\TempState\Logs`
+
+**Last updated: 2026-10-24**

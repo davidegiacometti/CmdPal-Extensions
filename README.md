@@ -32,12 +32,15 @@ winget install davidegiacometti.VisualStudioForCmdPal
 
 **Snippets**
 
-Coming soon!
+```powershell
+winget install davidegiacometti.SnippetsForCmdPal
+```
 
 ### Microsoft Store
 
 - [Edge Favorites](https://apps.microsoft.com/detail/9nqwbr1dj2pq)
 - [Visual Studio](https://apps.microsoft.com/detail/9p0p3jxp7m3g)
+- [Snippets](https://apps.microsoft.com/detail/9p643kl240cb)
 
 ### GitHub Releases
 
@@ -47,3 +50,7 @@ You can install the extensions manually using the MSIX packages available in the
 
 - **New Extensions:** I’m not accepting PRs for new extensions. If you have a new idea, feel free to create your own project!
 - **Fixes & Improvements:** I do accept PRs for bug fixes and improvements to existing code. However, to avoid the risk of your PR being rejected, please ensure that you file an issue and receive feedback before starting any work.
+
+## Privacy
+
+See [Privacy Policy](PRIVACY_POLICY.md)
